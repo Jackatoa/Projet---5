@@ -15,8 +15,8 @@ class Criteria():
             choice = input()
             if z.allquestions[1].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) < len(z.allquestions[1].propositions) - 1:
-                    c.choosing_food(z.allquestions[1].propositions[int(choice)])
+                if int(choice) < len(z.allquestions[1].propositions):
+                    c.choosing_food(z.allquestions[1].propositions[int(choice) - 1])
 
     def choosing_food(self, food):
         """Propose food from the choosen categorie"""
@@ -27,12 +27,12 @@ class Criteria():
             choice = input()
             if z.allquestions[2].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) < len(z.allquestions[2].propositions) - 2:
-                    newfood = Food(z.allquestions[2].propositions[int(choice)], food)
+                if int(choice) < len(z.allquestions[2].propositions) - 1:
+                    newfood = Food(z.allquestions[2].propositions[int(choice) - 1], food)
                     c.choosing_criteria(newfood, food)
-                if int(choice) == 10:
-                    c.choosing_food(food)
                 if int(choice) == 11:
+                    c.choosing_food(food)
+                if int(choice) == 12:
                     c.choosing_categorie()
 
     def nutritionnal_value(self, foodobject, food):
@@ -44,11 +44,11 @@ class Criteria():
                 choice = input()
                 if z.allquestions[7].check_if_choice_is_valable(choice):
                     cntnue = False
-                    if int(choice) == len(z.allquestions[7].propositions) - 1:
+                    if int(choice) == len(z.allquestions[7].propositions):
                         c.choosing_criteria(foodobject, food)
                     else:
                         foodobject.wantednutritionnalvalue.append(
-                            z.allquestions[7].propositions[int(choice)])
+                            z.allquestions[7].propositions[int(choice) - 1])
                         foodobject.numberofcriteria += 1
                         c.choosing_criteria(foodobject, food)
         else:
@@ -62,7 +62,7 @@ class Criteria():
             choice = input()
             if z.allquestions[11].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) == 0:
+                if int(choice) == 1:
                     foodobject.wantednutritionnalvalue = []
                     foodobject.numberofcriteria -= 1
                     c.nutritionnal_value(foodobject, food)
@@ -76,24 +76,23 @@ class Criteria():
             z.allquestions[3].play_question()
             choice = input()
             if z.allquestions[3].check_if_choice_is_valable(choice):
-                if foodobject.numberofcriteria == 0 and int(choice) == 6:
+                if foodobject.numberofcriteria == 0 and int(choice) == 7:
                     print("Vous n'avez actuellement choisi aucun critère\n")
                 else:
                     cntnue = False
-                    if int(choice) == 0:
-                        c.packaging(foodobject, food)
                     if int(choice) == 1:
-                        c.nutritionnal_value(foodobject, food)
+                        c.packaging(foodobject, food)
                     if int(choice) == 2:
-                        c.allergen(foodobject, food)
+                        c.nutritionnal_value(foodobject, food)
                     if int(choice) == 3:
-                        c.additives(foodobject, food)
+                        c.allergen(foodobject, food)
                     if int(choice) == 4:
-                        print("Le critère Nutri-Score a bien été ajouté")
-                        c.nutri_score(foodobject, food)
+                        c.additives(foodobject, food)
                     if int(choice) == 5:
+                        c.nutri_score(foodobject, food)
+                    if int(choice) == 6:
                         c.choosing_food(food)
-                    if foodobject.numberofcriteria > 0 and int(choice) == 6:
+                    if foodobject.numberofcriteria > 0 and int(choice) == 7:
                         su.generating_query_from_criteria(foodobject)
 
     def packaging(self, foodobject, food):
@@ -101,6 +100,7 @@ class Criteria():
         if foodobject.packaging:
             if foodobject.packaging[0] != "null" and foodobject.packaging[0] != "":
                 foodobject.clean_list()
+                z.allquestions[9].propositions = foodobject.packaging
                 c.choosing_packaging(foodobject, food)
             else:
                 print("Il n'y a pas de conditionnement enregistré pour cet objet")
@@ -111,23 +111,25 @@ class Criteria():
 
     def choosing_packaging(self, foodobject, food):
         """Propose packaging criteria from selected food"""
-        z.allquestions[9].propositions = foodobject.packaging
         cntnue = True
         while cntnue:
-            z.allquestions[9].play_question()
-            choice = input()
-            if z.allquestions[9].check_if_choice_is_valable(choice):
-                if foodobject.packaging[int(choice)] not in foodobject.unwantedpackaging:
+            if len(z.allquestions[9].propositions) > 1 and not \
+                    set(foodobject.packaging).issubset(foodobject.unwantedpackaging):
+                z.allquestions[9].play_question()
+                choice = input()
+                if z.allquestions[9].check_if_choice_is_valable(choice):
                     cntnue = False
-                    foodobject.unwantedpackaging.append(foodobject.packaging[int(choice)])
-                    foodobject.numberofcriteria += 1
-                    if len(z.allquestions[9].propositions) > 1 and not \
-                            set(foodobject.packaging).issubset(foodobject.unwantedpackaging):
+                    if foodobject.packaging[int(choice) - 1] not in foodobject.unwantedpackaging:
+                        foodobject.unwantedpackaging.append(foodobject.packaging[int(choice) - 1])
+                        foodobject.numberofcriteria += 1
                         c.choosing_another_packaging(foodobject, food)
                     else:
-                        c.choosing_criteria(foodobject, food)
-                else:
-                    print("Cet élément est déja choisi. Choissisez en un autre.")
+                        c.choosing_packaging(foodobject, food)
+                        print("Cet élément est déja choisi. Choissisez en un autre.")
+            else:
+                print("Tout les critères de packaging sont déjà choisis.")
+                cntnue = False
+                c.choosing_criteria(foodobject, food)
 
     def choosing_another_packaging(self, foodobject, food):
         """Propose to add a new packaging criteria"""
@@ -137,9 +139,9 @@ class Criteria():
             choice = input()
             if z.allquestions[10].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) == 0:
-                    c.choosing_packaging(foodobject, food)
                 if int(choice) == 1:
+                    c.choosing_packaging(foodobject, food)
+                if int(choice) == 2:
                     c.choosing_criteria(foodobject, food)
 
     def allergen(self, foodobject, food):
@@ -156,7 +158,7 @@ class Criteria():
                     if z.allquestions[5].check_if_choice_is_valable(choice):
                         cntnue = False
                         foodobject.unwantedallergen.append(
-                            z.allquestions[5].propositions[int(choice)])
+                            z.allquestions[5].propositions[int(choice) - 1])
                         foodobject.numberofcriteria += 1
                         c.choosing_criteria(foodobject, food)
                 else:
@@ -174,7 +176,7 @@ class Criteria():
             choice = input()
             if z.allquestions[12].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) == 0:
+                if int(choice) == 1:
                     foodobject.unwantedallergen = []
                     foodobject.numberofcriteria -= 1
                     c.allergen(foodobject, food)
@@ -195,7 +197,7 @@ class Criteria():
                     if z.allquestions[6].check_if_choice_is_valable(choice):
                         cntnue = False
                         foodobject.unwantedadditives.append(
-                            z.allquestions[6].propositions[int(choice)])
+                            z.allquestions[6].propositions[int(choice) - 1])
                         foodobject.numberofcriteria += 1
                         c.choosing_criteria(foodobject, food)
                 else:
@@ -213,7 +215,7 @@ class Criteria():
             choice = input()
             if z.allquestions[13].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) == 0:
+                if int(choice) == 1:
                     foodobject.unwantedadditives = []
                     foodobject.numberofcriteria -= 1
                     c.additives(foodobject, food)
@@ -222,9 +224,15 @@ class Criteria():
 
     def nutri_score(self, foodobject, food):
         """Select the criteria nutri score"""
-        foodobject.numberofcriteria += 1
-        foodobject.betterscore = True
-        c.choosing_criteria(foodobject, food)
+        if foodobject.score[0] != "Ce produit n'est pas noté":
+            foodobject.numberofcriteria += 1
+            foodobject.betterscore = True
+            print("Le critère Nutri-Score a bien été ajouté")
+            c.choosing_criteria(foodobject, food)
+        else:
+            print(foodobject.score[0])
+            c.choosing_criteria(foodobject, food)
+
 
     def get_substitued_aliments(self):
         """Print all substituted aliments"""
@@ -233,9 +241,9 @@ class Criteria():
         for x in substitutelst:
             newsubstitutelst.append(list(x))
         i = 0
-        while i < len(newsubstitutelst) - 1:
-            print("Vous avez remplacé {0} par {1}".format(newsubstitutelst[i][0], substitutelst[
-                i + 1][1]))
+        while i < len(newsubstitutelst):
+            print("Vous avez remplacé {0} par {1}".format(newsubstitutelst[i][0], newsubstitutelst[
+                i][1]))
             i += 1
 
 

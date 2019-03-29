@@ -15,18 +15,21 @@ class Main:
             z.allquestions[0].play_question()
             choice = input()
             if z.allquestions[0].check_if_choice_is_valable(choice):
-                if int(choice) == 0:
+                if int(choice) == 1:
                     if s.get_number_of_rows("alimentsss") >= 50:
                         c.choosing_categorie()
                     else:
                         m.database_is_empty()
-                if int(choice) == 1:
-                    m.looking_substituted()
                 if int(choice) == 2:
-                    m.generate_db()
+                    m.looking_substituted()
                 if int(choice) == 3:
-                    m.clean_substitued()
+                    print("En cours de création de la base de données, patientez SVP")
+                    s.clean_table("alimentsss")
+                    m.generate_db()
+                    print("Base de données prête à l'emploi")
                 if int(choice) == 4:
+                    m.clean_substitued()
+                if int(choice) == 5:
                     break
 
     def looking_substituted(self):
@@ -46,11 +49,11 @@ class Main:
         z.allquestions[8].play_question()
         choice = input()
         if z.allquestions[8].check_if_choice_is_valable(choice):
-            if int(choice) == 0:
+            if int(choice) == 1:
                 print("En cours de création de la base de données, patientez SVP")
                 m.database_creation()
                 print("Base de données prête à l'emploi")
-            elif int(choice) == 1:
+            elif int(choice) == 2:
                 Main.cntinue = False
 
     def database_creation(self):
@@ -67,7 +70,7 @@ class Main:
             choice = input()
             if z.allquestions[15].check_if_choice_is_valable(choice):
                 cntnue = False
-                if int(choice) == 0:
+                if int(choice) == 1:
                     s.clean_table("newaliments")
                 else:
                     m.main()
