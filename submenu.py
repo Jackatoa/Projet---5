@@ -63,7 +63,10 @@ class Submenu():
             if int(choice) == 1 or int(choice) == 2:
                 cntnue = False
                 if int(choice) == 1:
-                    S.save_new_food(foodobject.name, newfoodname)
+                    print(foodobject.name, foodobject.number[0], newfood.name,
+                                    newfood.number[0])
+                    S.save_new_food(foodobject.name, foodobject.number[0], newfood.name,
+                                    newfood.number[0])
 
     def packaging_query(self, foodobject):
         """Generate the query from selected packaging"""

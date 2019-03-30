@@ -41,7 +41,6 @@ class Main:
 
     def generate_db(self):
         """Generate database"""
-        s.modify_column_type("alimentsss")
         g.distrib_url()
 
     def database_is_empty(self):
@@ -59,7 +58,6 @@ class Main:
     def database_creation(self):
         """Clean and recreate the database"""
         s.clean_table("alimentsss")
-        s.modify_column_type("alimentsss")
         g.distrib_url()
 
     def clean_substitued(self):

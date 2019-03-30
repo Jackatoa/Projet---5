@@ -33,15 +33,15 @@ class Sqlfunc:
     mycursor.execute('SET character_set_connection=utf8mb4;')
     mycursor.execute("create TABLE IF NOT EXISTS alimentsss ("
                      "nom VARCHAR(255), "
-                     "allergen VARCHAR(255), "
+                     "allergen TEXT, "
                      "teneur VARCHAR(255), "
                      "additifs VARCHAR(255), "
                      "packaging VARCHAR(255), "
-                     "categorie VARCHAR(255), "
-                     "score VARCHAR(255), "
+                     "categorie TEXT, "
+                     "score VARCHAR(30), "
                      "imageurl VARCHAR(255), "
-                     "shop VARCHAR(255), "
-                     "url VARCHAR(255)) "
+                     "shop TEXT, "
+                     "url VARCHAR(255) PRIMARY KEY)"
                      "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
                      )
 
@@ -50,7 +50,11 @@ class Sqlfunc:
     mycursor.execute('SET character_set_connection=utf8mb4;')
     mycursor.execute("create TABLE IF NOT EXISTS newaliments ("
                      "nom VARCHAR(255), "
-                     "newnom VARCHAR(255)) "
+                     "url VARCHAR(255),"
+                     "newnom VARCHAR(255),"
+                     "newurl VARCHAR(255),"
+                     "CONSTRAINT fk_nom_url FOREIGN KEY (url) REFERENCES alimentsss(url),"
+                     "CONSTRAINT fk_newnom_url FOREIGN KEY (newurl) REFERENCES alimentsss(url))"
                      "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
                      )
 
@@ -69,14 +73,7 @@ class Sqlfunc:
         Sqlfunc.mycursor.execute(sql, val)
         Sqlfunc.mydb.commit()
 
-    def modify_column_type(self, tablename):
-        """Patch column to be large enough"""
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY allergen VARCHAR(1000) ")
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY url VARCHAR(1000) ")
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY categorie VARCHAR(1000) ")
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY packaging VARCHAR(1000) ")
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY imageurl VARCHAR(1000) ")
-        Sqlfunc.mycursor.execute("ALTER TABLE " + tablename + " MODIFY shop VARCHAR(1000) ")
+
 
     def get_number_of_rows(self, tablename):
         """Return number of rows mainly to check if DB is empty"""
@@ -94,7 +91,9 @@ class Sqlfunc:
 
     def clean_table(self, tablename):
         """Clean the DB"""
+        Sqlfunc.mycursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
         Sqlfunc.mycursor.execute("TRUNCATE TABLE " + tablename)
+        Sqlfunc.mycursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
 
     def get_something_from(self, name, something):
         Sqlfunc.mycursor.execute("SELECT " + something + " FROM alimentsss WHERE nom LIKE %s "
@@ -109,10 +108,10 @@ class Sqlfunc:
         result = Sqlfunc.mycursor.fetchall()
         return result
 
-    def save_new_food(self, oldfood, newfood):
+    def save_new_food(self, oldfood, url, newfood, newurl):
         """Insert food and substitued"""
-        sql = "INSERT INTO  newaliments (nom, newnom) VALUES (%s, %s)"
-        val = (oldfood, newfood)
+        sql = "INSERT INTO  newaliments (nom, url, newnom, newurl) VALUES (%s, %s, %s, %s)"
+        val = (oldfood, url, newfood, newurl)
         Sqlfunc.mycursor.execute('SET NAMES utf8mb4;')
         Sqlfunc.mycursor.execute('SET CHARACTER SET utf8mb4;')
         Sqlfunc.mycursor.execute('SET character_set_connection=utf8mb4;')

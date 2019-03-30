@@ -42,6 +42,7 @@ class Generatingdb:
     def distrib_url(self):
         """For each categorie url, take 200 aliments"""
         G = Generatingdb()
+        usedcodes = []
         urlsdescategories = ["https://world.openfoodfacts.org/category/snacks",
                              "https://world.openfoodfacts.org/category/meals",
                              "https://world.openfoodfacts.org/category/cereals-and-potatoes",
@@ -50,6 +51,11 @@ class Generatingdb:
                              "https://world.openfoodfacts.org/category/desserts",
                              "https://world.openfoodfacts.org/category/frozen-foods"]
         for url in urlsdescategories:
+            print("{1}/{2} -Enregistrement des produits depuis : {0}".format(url,
+                                                                             urlsdescategories.index(
+                                                                                 url) + 1,
+                                                                             len(
+                                                                                 urlsdescategories)))
             i = 0
             while i < 10:
                 newurl = url + "/" + str(i) + ".json"
@@ -60,12 +66,14 @@ class Generatingdb:
                 for keys in r3:
                     codes.append(keys["code"])
                 for code in codes:
-                    G.insert_aliment_record(G.get_product_url_from_code(code))
+                    if code not in usedcodes:
+                        usedcodes.append(code)
+                        G.insert_aliment_record(G.get_product_url_from_code(code))
                 i += 1
 
     def get_product_url_from_code(self, code):
         """return the url from the code"""
-        return "https://fr.openfoodfacts.org/api/v0/produit/" + code + ".json"
+        return "https://fr.openfoodfacts.org/api/v0/produit/" + code
 
     def get_nutriscore(self, score):
         """Change the number score to letter score"""

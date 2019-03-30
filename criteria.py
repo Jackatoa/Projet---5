@@ -113,7 +113,7 @@ class Criteria():
         """Propose packaging criteria from selected food"""
         cntnue = True
         while cntnue:
-            if len(z.allquestions[9].propositions) > 1 and not \
+            if len(z.allquestions[9].propositions) > 0 and not \
                     set(foodobject.packaging).issubset(foodobject.unwantedpackaging):
                 z.allquestions[9].play_question()
                 choice = input()
@@ -242,10 +242,15 @@ class Criteria():
             newsubstitutelst.append(list(x))
         i = 0
         while i < len(newsubstitutelst):
-            print("Vous avez remplacé {0} par {1}".format(newsubstitutelst[i][0], newsubstitutelst[
-                i][1]))
+            print("Vous avez remplacé {0} par {1} \nUrl du produit original : "
+                  "{2}\nUrl du nouveau produit : {3}".format(
+                newsubstitutelst[i][0], newsubstitutelst[i][2],  c.get_url_cleaned(newsubstitutelst[
+                i][1]), c.get_url_cleaned(newsubstitutelst[i][3])))
             i += 1
 
+    def get_url_cleaned(self, url):
+        producturl = url.replace("api/v0/", "")
+        return producturl
 
 c = Criteria()
 z = Zulu()
