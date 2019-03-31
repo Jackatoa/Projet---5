@@ -43,19 +43,20 @@ class Generatingdb:
         """For each categorie url, take 200 aliments"""
         G = Generatingdb()
         usedcodes = []
-        urlsdescategories = ["https://world.openfoodfacts.org/category/snacks",
+        categoriesurl = ["https://world.openfoodfacts.org/category/snacks",
                              "https://world.openfoodfacts.org/category/meals",
                              "https://world.openfoodfacts.org/category/cereals-and-potatoes",
                              "https://world.openfoodfacts.org/category/meats",
                              "https://world.openfoodfacts.org/category/cheeses",
                              "https://world.openfoodfacts.org/category/desserts",
-                             "https://world.openfoodfacts.org/category/frozen-foods"]
-        for url in urlsdescategories:
+                             "https://world.openfoodfacts.org/category/frozen-foods"
+                             ]
+        for url in categoriesurl:
             print("{1}/{2} -Enregistrement des produits depuis : {0}".format(url,
-                                                                             urlsdescategories.index(
+                                                                             categoriesurl.index(
                                                                                  url) + 1,
                                                                              len(
-                                                                                 urlsdescategories)))
+                                                                                 categoriesurl)))
             i = 0
             while i < 10:
                 newurl = url + "/" + str(i) + ".json"
