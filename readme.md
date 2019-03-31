@@ -28,6 +28,48 @@ Bienvenue sur ce logiciel. Que voulez vous faire ?
 
 ```
 
+## Adding categories for search
+To add a categorie for search, you have to manually add an element to the list questionspropositions in questions.py. Be sure to add the categorie before "Retour au menu précédent" and to add a comma after the newcategorie.
+```Python
+"""Before :"""
+questionspropositions = [
+        ["Choisir un aliment.", "Voir les aliments substitués.", "Regenerer la base de données.",
+         "Supprimer les aliments substitués.", "Quitter le logiciel."],
+        ["Snacks", "Meals", "Cereals", "Meats", "Cheeses", "Retour au menu précédent"],
+        [],
+
+"""After :"""
+questionspropositions = [
+        ["Choisir un aliment.", "Voir les aliments substitués.", "Regenerer la base de données.",
+         "Supprimer les aliments substitués.", "Quitter le logiciel."],
+        ["Snacks", "Meals", "Cereals", "Meats", "Cheeses", "NEWCATEGORIE", "Retour au menu précédent"],
+        [],
+```
+
+## Adding categories for the database
+To add a categorie for the database, you have to manually add an element to the list categoriesurl in generatingdb.py. Be sure to add a correct url and a comma before the url element.
+```Python
+"""Before :"""
+categoriesurl = ["https://world.openfoodfacts.org/category/snacks",
+                             "https://world.openfoodfacts.org/category/meals",
+                             "https://world.openfoodfacts.org/category/cereals-and-potatoes",
+                             "https://world.openfoodfacts.org/category/meats",
+                             "https://world.openfoodfacts.org/category/cheeses",
+                             "https://world.openfoodfacts.org/category/desserts",
+                             "https://world.openfoodfacts.org/category/frozen-foods"
+                             ]
+
+"""After :"""
+categoriesurl = ["https://world.openfoodfacts.org/category/snacks",
+                             "https://world.openfoodfacts.org/category/meals",
+                             "https://world.openfoodfacts.org/category/cereals-and-potatoes",
+                             "https://world.openfoodfacts.org/category/meats",
+                             "https://world.openfoodfacts.org/category/cheeses",
+                             "https://world.openfoodfacts.org/category/desserts",
+                             "https://world.openfoodfacts.org/category/frozen-foods",
+                             "https://world.openfoodfacts.org/category/NEWCATEGORIE"
+                             ]
+```
 ## Disclaimer
 This program has been developped for a python formation. 
 No red panda have been injured during this work.
