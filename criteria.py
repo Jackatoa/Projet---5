@@ -233,7 +233,6 @@ class Criteria():
             print(foodobject.score[0])
             c.choosing_criteria(foodobject, food)
 
-
     def get_substitued_aliments(self):
         """Print all substituted aliments"""
         substitutelst = S.get_substitued()
@@ -244,13 +243,18 @@ class Criteria():
         while i < len(newsubstitutelst):
             print("Vous avez remplacé {0} par {1} \nUrl du produit original : "
                   "{2}\nUrl du nouveau produit : {3}".format(
-                newsubstitutelst[i][0], newsubstitutelst[i][2],  c.get_url_cleaned(newsubstitutelst[
-                i][1]), c.get_url_cleaned(newsubstitutelst[i][3])))
+                newsubstitutelst[i][0],
+                newsubstitutelst[i][2],
+                c.get_url_cleaned(newsubstitutelst[i][1]),
+                c.get_url_cleaned(newsubstitutelst[i][3])
+            )
+            )
             i += 1
 
     def get_url_cleaned(self, url):
         producturl = url.replace("api/v0/", "")
         return producturl
+
 
 c = Criteria()
 z = Zulu()

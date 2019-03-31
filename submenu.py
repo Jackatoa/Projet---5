@@ -63,8 +63,6 @@ class Submenu():
             if int(choice) == 1 or int(choice) == 2:
                 cntnue = False
                 if int(choice) == 1:
-                    print(foodobject.name, foodobject.number[0], newfood.name,
-                                    newfood.number[0])
                     S.save_new_food(foodobject.name, foodobject.number[0], newfood.name,
                                     newfood.number[0])
 
