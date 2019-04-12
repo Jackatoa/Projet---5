@@ -30,7 +30,7 @@ class Main:
                 if int(choice) == 4:
                     m.clean_substitued()
                 if int(choice) == 5:
-                    break
+                    Main.cntinue = False
 
     def looking_substituted(self):
         """Check if substituted food exist, if yes, it prints them"""

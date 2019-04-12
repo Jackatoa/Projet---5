@@ -67,9 +67,6 @@ class Sqlfunc:
         val = (nom, allergen, teneur, additifs, packaging, categorie, score, imageurl, shop, url +
                chr(
                    300))
-        Sqlfunc.mycursor.execute('SET NAMES utf8mb4;')
-        Sqlfunc.mycursor.execute('SET CHARACTER SET utf8mb4;')
-        Sqlfunc.mycursor.execute('SET character_set_connection=utf8mb4;')
         Sqlfunc.mycursor.execute(sql, val)
         Sqlfunc.mydb.commit()
 
@@ -112,9 +109,6 @@ class Sqlfunc:
         """Insert food and substitued"""
         sql = "INSERT INTO  newaliments (nom, url, newnom, newurl) VALUES (%s, %s, %s, %s)"
         val = (oldfood, url, newfood, newurl)
-        Sqlfunc.mycursor.execute('SET NAMES utf8mb4;')
-        Sqlfunc.mycursor.execute('SET CHARACTER SET utf8mb4;')
-        Sqlfunc.mycursor.execute('SET character_set_connection=utf8mb4;')
         Sqlfunc.mycursor.execute(sql, val)
         Sqlfunc.mydb.commit()
         print("Enregistrement réussi !")
