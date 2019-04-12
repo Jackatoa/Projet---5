@@ -91,9 +91,9 @@ class Submenu():
             value = "sugars-in-high"
         if "Sucre en faible quantité" in foodobject.wantednutritionnalvalue:
             value = "sugars-in-low"
-        if "Protéines en grande quantité" in foodobject.wantednutritionnalvalue:
+        if "Sel en grande quantité" in foodobject.wantednutritionnalvalue:
             value = "salt-in-high"
-        if "Protéines en faible quantité" in foodobject.wantednutritionnalvalue:
+        if "Sel en faible quantité" in foodobject.wantednutritionnalvalue:
             value = "salt-in-low"
         return value
 
